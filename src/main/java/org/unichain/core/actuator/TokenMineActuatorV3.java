@@ -46,9 +46,11 @@ public class TokenMineActuatorV3 extends AbstractActuator {
     try {
       var ctx = contract.unpack(MineTokenContract.class);
       var tokenKey = Util.stringAsBytesUppercase(ctx.getTokenName());
-      var tokenCapsule = dbManager.getTokenPoolStore().get(tokenKey);
-      tokenCapsule.setTotalSupply(tokenCapsule.getTotalSupply() + ctx.getAmount());
-      dbManager.getTokenPoolStore().put(tokenKey, tokenCapsule);
+      var tokenCap = dbManager.getTokenPoolStore().get(tokenKey);
+      tokenCap.setTotalSupply(tokenCap.getTotalSupply() + ctx.getAmount());
+      tokenCap.setCriticalUpdateTime(dbManager.getHeadBlockTimeStamp());
+      tokenCap.setLatestOperationTime(dbManager.getHeadBlockTimeStamp());
+      dbManager.getTokenPoolStore().put(tokenKey, tokenCap);
 
       var ownerAddress = ctx.getOwnerAddress().toByteArray();
       var accountCapsule = dbManager.getAccountStore().get(ownerAddress);
@@ -59,7 +61,7 @@ public class TokenMineActuatorV3 extends AbstractActuator {
       ret.setStatus(fee, code.SUCESS);
       return true;
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);
       ret.setStatus(fee, code.FAILED);
       throw new ContractExeException(e.getMessage());
     }
@@ -97,7 +99,7 @@ public class TokenMineActuatorV3 extends AbstractActuator {
       return true;
     }
     catch (Exception e){
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);
       throw new ContractValidateException(e.getMessage());
     }
   }

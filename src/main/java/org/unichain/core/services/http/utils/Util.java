@@ -294,8 +294,8 @@ public class Util {
             contractJson = JSONObject.parseObject(JsonFormat.printToString(transferTokenOwnerContract, selfType));
             break;
           case ExchangeTokenContract:
-            TokenExchangeContract tokenExchangeContract = contractParameter.unpack(TokenExchangeContract.class);
-            contractJson = JSONObject.parseObject(JsonFormat.printToString(tokenExchangeContract, selfType));
+            ExchangeTokenContract exchangeTokenContract = contractParameter.unpack(ExchangeTokenContract.class);
+            contractJson = JSONObject.parseObject(JsonFormat.printToString(exchangeTokenContract, selfType));
             break;
           case ContributeTokenPoolFeeContract:
             ContributeTokenPoolFeeContract contributeTokenPoolFeeContract = contractParameter.unpack(ContributeTokenPoolFeeContract.class);
@@ -334,7 +334,7 @@ public class Util {
         }
         contracts.add(jsonContract);
       } catch (InvalidProtocolBufferException e) {
-        logger.debug("InvalidProtocolBufferException: {}", e.getMessage());
+        logger.error(e.getMessage(), e);
       }
     });
 
@@ -540,10 +540,10 @@ public class Util {
             JsonFormat.merge(parameter.getJSONObject(VALUE).toJSONString(), transferTokenOwnerContractBuilder, selfType);
             any = Any.pack(transferTokenOwnerContractBuilder.build());
             break;
-          case "TokenExchangeContract":
-            TokenExchangeContract.Builder tokenExchangeContractBuilder = TokenExchangeContract.newBuilder();
-            JsonFormat.merge(parameter.getJSONObject(VALUE).toJSONString(), tokenExchangeContractBuilder, selfType);
-            any = Any.pack(tokenExchangeContractBuilder.build());
+          case "ExchangeTokenContract":
+            ExchangeTokenContract.Builder exchangeTokenContractBuilder = ExchangeTokenContract.newBuilder();
+            JsonFormat.merge(parameter.getJSONObject(VALUE).toJSONString(), exchangeTokenContractBuilder, selfType);
+            any = Any.pack(exchangeTokenContractBuilder.build());
             break;
           case "ContributeTokenPoolFeeContract":
             ContributeTokenPoolFeeContract.Builder contributeTokenPoolContractBuilder = ContributeTokenPoolFeeContract.newBuilder();
@@ -584,7 +584,7 @@ public class Util {
           contracts.add(contract);
         }
       } catch (ParseException e) {
-        logger.debug("ParseException: {}", e.getMessage());
+        logger.error("ParseException: {}", e.getMessage(), e);
       }
     }
     rawData.put("contract", contracts);
@@ -594,7 +594,7 @@ public class Util {
       JsonFormat.merge(jsonTransaction.toJSONString(), transactionBuilder, selfType);
       return transactionBuilder.build();
     } catch (ParseException e) {
-      logger.debug("ParseException: {}", e.getMessage());
+      logger.error("ParseException: {}", e.getMessage(), e);
       return null;
     }
   }
@@ -642,6 +642,7 @@ public class Util {
 
   public static Descriptors.FieldDescriptor TOKEN_CREATE_FIELD_START_TIME= CreateTokenContract.getDescriptor().findFieldByNumber(CreateTokenContract.START_TIME_FIELD_NUMBER);
   public static Descriptors.FieldDescriptor TOKEN_CREATE_FIELD_END_TIME= CreateTokenContract.getDescriptor().findFieldByNumber(CreateTokenContract.END_TIME_FIELD_NUMBER);
+  public static Descriptors.FieldDescriptor TOKEN_CREATE_FIELD_CRITICAL_TIME = CreateTokenContract.getDescriptor().findFieldByNumber(CreateTokenContract.CRITICAL_UPDATE_TIME_FIELD_NUMBER);
 
 
   public static int DEFAULT_PAGE_SIZE = 20;

@@ -11,7 +11,7 @@ public class Parameter {
    * @critical: all supported version add here
    */
   public static final Set<Integer> BLOCK_VERSION_SUPPORTED = new HashSet<>(Arrays.asList(
-          ChainConstant.BLOCK_VERSION,
+          ChainConstant.BLOCK_VERSION_1,
           ChainConstant.BLOCK_VERSION_2,
           ChainConstant.BLOCK_VERSION_3));
 
@@ -42,25 +42,29 @@ public class Parameter {
     public static final int MAX_FROZEN_NUMBER = 1;
 
     /**
-     * @note critical: all available block version must declare here
+     * Critical: all available block version must declare here
      */
-    public static final int BLOCK_VERSION = 1;
+    public static final int BLOCK_VERSION_0 = 0;
+    public static final int BLOCK_VERSION_1 = 1;
     public static final int BLOCK_VERSION_2 = 2;
     public static final int BLOCK_VERSION_3 = 3;
 
     /**
      * max unw/token transfer time range
      */
-    public static final long MAX_FUTURE_TRANSFER_TIME_RANGE_UNW = 10*31536000000L;//10 years
-    public static final long MAX_FUTURE_TRANSFER_UNW_TIME_RANGE_UPPER_BOUND = 30*31536000000L;//30 years
-    public static final long MAX_FUTURE_TRANSFER_TIME_RANGE_TOKEN = 10*31536000000L;//10 years
-    public static final long MAX_FUTURE_TRANSFER_TIME_RANGE_TOKEN_UPPER_BOUND = 30*31536000000L;//30 years
-    public static final long MAX_TOKEN_AGE = 50*31536000000L;//50 years
-    public static final long DEFAULT_TOKEN_AGE = 20*31536000000L;//20 years
-    public static final long MAX_TOKEN_ACTIVE = 50*31536000000L;//50 years
-    public static final long DEFAULT_TOKEN_AGE_V3 = 50*31536000000L;//50 years
-    public static final long MAX_TOKEN_AGE_V3 = 200*31536000000L;//200 years
-    public static final long MIN_TOKEN_POOL_FEE = 10*1000000L;//10 UNW
+    public static final long UNW_MAX_FUTURE_TRANSFER_TIME_RANGE = 10*31536000000L;//10 years
+    public static final long UNW_MAX_FUTURE_TRANSFER_TIME_RANGE_V3 = 50*31536000000L;//50 years
+    public static final long UNW_MAX_FUTURE_TRANSFER_TIME_RANGE_UPPER_BOUND = 50*31536000000L;//50 years
+    public static final long URC30_MAX_FUTURE_TRANSFER_TIME_RANGE = 10*31536000000L;//10 years
+    public static final long URC30_MAX_FUTURE_TRANSFER_TIME_RANGE_V3 = 50*31536000000L;//50 years
+    public static final long URC30_MAX_FUTURE_TRANSFER_TIME_RANGE_UPPER_BOUND = 50*31536000000L;//50 years
+    public static final long URC30_MAX_AGE = 50*31536000000L;//50 years
+    public static final long URC30_DEFAULT_AGE = 20*31536000000L;//20 years
+    public static final long URC30_MAX_ACTIVE = 50*31536000000L;//50 years
+    public static final long URC30_DEFAULT_AGE_V3 = 50*31536000000L;//50 years
+    public static final long URC30_MAX_AGE_V3 = 200*31536000000L;//200 years
+    public static final long URC30_MIN_POOL_FEE = 10*1000000L;//10 UNW
+    public static final long URC30_CRITICAL_UPDATE_TIME_GUARD = 180*1000L;//3 minutes
   }
 
   public class NodeConstant {

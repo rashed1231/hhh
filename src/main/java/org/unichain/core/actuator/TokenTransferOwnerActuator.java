@@ -48,6 +48,8 @@ public class TokenTransferOwnerActuator extends AbstractActuator {
       }
 
       tokenPool.setOwnerAddress(ctx.getToAddress());
+      tokenPool.setCriticalUpdateTime(dbManager.getHeadBlockTimeStamp());
+      tokenPool.setLatestOperationTime(dbManager.getHeadBlockTimeStamp());
       tokenStore.put(tokenKey, tokenPool);
 
       var ownerAccount = accountStore.get(ownerAddress);
@@ -60,7 +62,7 @@ public class TokenTransferOwnerActuator extends AbstractActuator {
       ret.setStatus(fee, code.SUCESS);
       return true;
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);;
       ret.setStatus(fee, code.FAILED);
       throw new ContractExeException(e.getMessage());
     }
@@ -108,7 +110,7 @@ public class TokenTransferOwnerActuator extends AbstractActuator {
       return true;
     }
     catch (IllegalArgumentException | InvalidProtocolBufferException | ArithmeticException e){
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);;
       throw new ContractValidateException(e.getMessage());
     }
   }

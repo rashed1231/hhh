@@ -48,6 +48,8 @@ public class TokenBurnActuatorV3 extends AbstractActuator {
       var tokenKey = Util.stringAsBytesUppercase(ctx.getTokenName());
       var tokenCap = dbManager.getTokenPoolStore().get(tokenKey);
       tokenCap.burnToken(ctx.getAmount());
+      tokenCap.setLatestOperationTime(dbManager.getHeadBlockTimeStamp());
+      tokenCap.setCriticalUpdateTime(dbManager.getHeadBlockTimeStamp());
       dbManager.getTokenPoolStore().put(tokenKey, tokenCap);
 
       var ownerAddress = ctx.getOwnerAddress().toByteArray();
@@ -59,7 +61,7 @@ public class TokenBurnActuatorV3 extends AbstractActuator {
       ret.setStatus(fee, code.SUCESS);
       return true;
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);
       ret.setStatus(fee, code.FAILED);
       throw new ContractExeException(e.getMessage());
     }
@@ -91,7 +93,7 @@ public class TokenBurnActuatorV3 extends AbstractActuator {
       return true;
     }
     catch (Exception e){
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);
       throw new ContractValidateException(e.getMessage());
     }
   }

@@ -31,13 +31,13 @@ public class UpdateBrokerageActuator extends AbstractActuator {
       val ctx = contract.unpack(UpdateBrokerageContract.class);
       var ownerAddress = ctx.getOwnerAddress().toByteArray();
       var brokerage = ctx.getBrokerage();
-      //@note review role of brokerage when charging fee
+      //review role of brokerage when charging fee
       dbManager.getDelegationStore().setBrokerage(ownerAddress, brokerage);
       chargeFee(ownerAddress, fee);
       ret.setStatus(fee, code.SUCESS);
       return true;
     } catch (InvalidProtocolBufferException | BalanceInsufficientException e) {
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);;
       ret.setStatus(fee, code.FAILED);
       throw new ContractExeException(e.getMessage());
     }
@@ -66,7 +66,7 @@ public class UpdateBrokerageActuator extends AbstractActuator {
 
       return true;
     } catch (Exception e) {
-      logger.error(e.getMessage(), e);
+      logger.error("Actuator error: {} --> ", e.getMessage(), e);;
       throw new ContractValidateException(e.getMessage());
     }
   }
